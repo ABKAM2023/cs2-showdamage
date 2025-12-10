@@ -1,0 +1,68 @@
+"Phrases"
+{
+	"Chat_DamageOn"
+	{
+		"en" "{GREEN}[DMG]{DEFAULT} Damage display: {GREEN}ON"
+		"ru" "{GREEN}[DMG]{DEFAULT} Отображение урона: {GREEN}включено"
+	}
+	"Chat_DamageOff"
+	{
+		"en" "{GREEN}[DMG]{DEFAULT} Damage display: {RED}OFF"
+		"ru" "{GREEN}[DMG]{DEFAULT} Отображение урона: {RED}выключено"
+	}
+	"HTML_Hit"
+	{
+		"en" "Damage: <font color='yellow'>%d</font> <img src='https://i.ibb.co/VJMw9Gd/image.png' /> HP Left: <font color='red'>%d</font> <img src='https://i.ibb.co/3FDnCmq/image.png' />\nHit: <font color='green'>%s</font>"
+		"ru" "Урон: <font color='yellow'>%d</font> <img src='https://i.ibb.co/VJMw9Gd/image.png' /> Остаток HP: <font color='red'>%d</font> <img src='https://i.ibb.co/3FDnCmq/image.png' />\nПопадание: <font color='green'>%s</font>"
+	}
+	"HTML_Grenade"
+	{
+		"en" "Grenade total damage: <font color='green'>%d</font> <img src='https://i.ibb.co/m9ZVjCD/image.png' />\nPlayers hit: <font color='yellow'>%zu</font>"
+		"ru" "Урон от гранаты: <font color='green'>%d</font> <img src='https://i.ibb.co/m9ZVjCD/image.png' />\nЗадето игроков: <font color='yellow'>%zu</font>"
+	}
+	"HTML_Fire"
+	{
+		"en" "Fire total damage: <font color='#ff9900'>%d</font> <img src='https://i.ibb.co/DfQNhqfC/image-2025-12-10-20-25-52.png' />\nPlayers hit: <font color='yellow'>%zu</font>"
+		"ru" "Общий урон от огня: <font color='#ff9900'>%d</font> <img src='https://i.ibb.co/DfQNhqfC/image-2025-12-10-20-25-52.png' />\nЗадето игроков: <font color='yellow'>%zu</font>"
+	}
+	"Hit_Generic"
+	{
+		"en" "Body"
+		"ru" "Тело"
+	}
+	"Hit_Head"
+	{
+		"en" "Head"
+		"ru" "Голова"
+	}
+	"Hit_Chest"
+	{
+		"en" "Chest"
+		"ru" "Грудь"
+	}
+	"Hit_Stomach"
+	{
+		"en" "Stomach"
+		"ru" "Живот"
+	}
+	"Hit_LeftArm"
+	{
+		"en" "Left arm"
+		"ru" "Левая рука"
+	}
+	"Hit_RightArm"
+	{
+		"en" "Right arm"
+		"ru" "Правая рука"
+	}
+	"Hit_LeftLeg"
+	{
+		"en" "Left leg"
+		"ru" "Левая нога"
+	}
+	"Hit_RightLeg"
+	{
+		"en" "Right leg"
+		"ru" "Правая нога"
+	}
+}
