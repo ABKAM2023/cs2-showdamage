@@ -1,3 +1,4 @@
+![GitHub all releases](https://img.shields.io/github/downloads/ABKAM2023/cs2-showdamage/total?style=for-the-badge)
 ## RU
 **ShowDamage** - показывает нанесённый урон и остаток HP жертвы прямо в центре экрана.
 
