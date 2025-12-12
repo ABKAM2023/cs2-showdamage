@@ -39,11 +39,14 @@ private:
 
 	struct HudState
 	{
-		CTimer* timer{nullptr};
 		float endTime{0.0f};
+		float lastSend{0.0f};
 		std::string html;
 		int durationSec{0};
 	};
+
+	float m_LastHudSend[64]{};
+	CTimer* m_HudTimer{nullptr};
 
 	void RegisterEvents();
 	void OnPlayerHurt(IGameEvent* pEvent);
@@ -51,6 +54,7 @@ private:
 	void StopGrenadeTimer(int attackerSlot);
 	void SendHudMessage(int slot, const std::string& html, int durationSec);
 	void StopHudTimer(int slot);
+	float HudPump();
 	void ApplyDamagePreference(int slot, bool enabled);
 	void LoadTranslations();
 	static std::string Phrase(const char* id, const char* fallback = "");

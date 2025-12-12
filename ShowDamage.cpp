@@ -129,13 +129,10 @@ bool ShowDamage::Unload(char *error, size_t maxlen)
 	{
 		g_pUtils->ClearAllHooks(g_PLID);
 
-		for (auto &pair : m_HudStates)
+		if (m_HudTimer)
 		{
-			if (pair.second.timer)
-			{
-				g_pUtils->RemoveTimer(pair.second.timer);
-				pair.second.timer = nullptr;
-			}
+			g_pUtils->RemoveTimer(m_HudTimer);
+			m_HudTimer = nullptr;
 		}
 		m_HudStates.clear();
 
@@ -426,8 +423,6 @@ void ShowDamage::SendHudMessage(int slot, const std::string& html, int durationS
 		return;
 	}
 
-	StopHudTimer(slot);
-
 	HudState& state = m_HudStates[slot];
 	state.html = html;
 	state.durationSec = durationSec > 0 ? durationSec : 5;
@@ -435,42 +430,69 @@ void ShowDamage::SendHudMessage(int slot, const std::string& html, int durationS
 	state.endTime = now + static_cast<float>(state.durationSec);
 
 	g_pUtils->PrintToCenterHtml(slot, state.durationSec, "%s", state.html.c_str());
-	state.timer = g_pUtils->CreateTimer(0.0f, [this, slot]() -> float
+	state.lastSend = now;
+
+	if (!m_HudTimer)
 	{
-		if (!g_pUtils)
+		m_HudTimer = g_pUtils->CreateTimer(0.0f, [this]() -> float
 		{
-			return -1.0f;
-		}
-		auto it = m_HudStates.find(slot);
-		if (it == m_HudStates.end())
+			return HudPump();
+		});
+	}
+}
+
+float ShowDamage::HudPump()
+{
+	if (!g_pUtils || !gpGlobals)
+	{
+		return -1.0f;
+	}
+
+	const float now = gpGlobals->curtime;
+	int active = 0;
+
+	for (auto it = m_HudStates.begin(); it != m_HudStates.end();)
+	{
+		int slot = it->first;
+		HudState& st = it->second;
+
+		if (now >= st.endTime)
 		{
-			return -1.0f;
+			it = m_HudStates.erase(it);
+			continue;
 		}
-		HudState &st = it->second;
-		const float nowInner = gpGlobals ? gpGlobals->curtime : 0.0f;
-		if (nowInner >= st.endTime)
+
+		active++;
+
+		if (g_pPlayers && !g_pPlayers->IsInGame(slot))
 		{
-			st.timer = nullptr;
-			return -1.0f;
+			it = m_HudStates.erase(it);
+			continue;
 		}
+
+		if (now - st.lastSend < 0.0f)
+		{
+			++it;
+			continue;
+		}
+
 		g_pUtils->PrintToCenterHtml(slot, st.durationSec, "%s", st.html.c_str());
-		return 0.0f;
-	});
+		st.lastSend = now;
+		++it;
+	}
+
+	if (active == 0)
+	{
+		m_HudTimer = nullptr;
+		return -1.0f;
+	}
+
+	return 0.0f;
 }
 
 void ShowDamage::StopHudTimer(int slot)
 {
-	auto it = m_HudStates.find(slot);
-	if (it == m_HudStates.end())
-	{
-		return;
-	}
-	if (it->second.timer && g_pUtils)
-	{
-		g_pUtils->RemoveTimer(it->second.timer);
-	}
-	it->second.timer = nullptr;
-	m_HudStates.erase(it);
+	m_HudStates.erase(slot);
 }
 
 void ShowDamage::ApplyDamagePreference(int slot, bool enabled)
@@ -617,7 +639,7 @@ const char* ShowDamage::GetLicense()
 
 const char* ShowDamage::GetVersion()
 {
-	return "1.0";
+	return "1.0.1";
 }
 
 const char* ShowDamage::GetDate()
